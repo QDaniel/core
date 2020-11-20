@@ -55,7 +55,8 @@ $di->set('view', function () use ($config) {
             $volt->getCompiler()->addFunction('theme_file_or_default', 'view_fetch_themed_filename');
             $volt->getCompiler()->addFunction('file_exists', 'view_file_exists');
             $volt->getCompiler()->addFunction('cache_safe', 'view_cache_safe');
-
+            $volt->getCompiler()->addFilter('iface_human', 'volt_getHumanInterfaceName');
+                   
             return $volt;
         },
         '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
@@ -63,6 +64,14 @@ $di->set('view', function () use ($config) {
 
     return $view;
 }, true);
+
+function volt_getHumanInterfaceName($iface, $htmltooltip = true)
+{ 
+    $desc = getHumanInterfaceName($iface);
+    if($iface == $desc || empty($htmltooltip)) return $desc;
+    return '<span title="'.$iface.'">'.$desc.'</span>';
+}
+
 
 /**
  * If the configuration specify the use of metadata adapter use it or use memory otherwise

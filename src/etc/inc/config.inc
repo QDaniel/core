@@ -296,6 +296,24 @@ function legacy_config_get_interfaces($filters = array())
     return $interfaces;
 }
 
+$_humanInterfaceNames = array();
+function getHumanInterfaceName($iface)
+{ 
+    if(empty($_humanInterfaceNames))
+    {
+        $_humanInterfaceNames = array();
+        foreach (legacy_config_get_interfaces(array('virtual' => false)) as $if => $ifdetail) {
+            $_humanInterfaceNames[$if] = $ifdetail['descr'];
+            if($ifdetail['if'] != $if) $_humanInterfaceNames[$ifdetail['if']] = $ifdetail['descr'];
+        }
+    }
+    if(isset($_humanInterfaceNames[$iface])) return $_humanInterfaceNames[$iface];
+    return $iface;
+}
+
+
+
+
 /**
  * parse stored json content, return empty when not found or expired
  */
